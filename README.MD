@@ -1,6 +1,6 @@
 # Hand segmentation from RGBD input
 
-Real-time pipeline for hand & wrist segmentation based on random decision forests, joint bilateral upsampling, decision adjustment and post-processing.
+Super real-time pipeline (<2 ms/frame on CPU) for hand & wrist segmentation based on random decision forests, joint bilateral upsampling, decision adjustment and post-processing.
 
 # Overview
 
