@@ -1,0 +1,15 @@
+# The standard CMake build folders.
+build
+build_debug
+
+# The examples runtime results.
+examples/python/*.png
+examples/python/*.pyc
+examples/python/__pycache__
+examples/matlab/test_tree.ft
+
+# The developer tools if installed.
+fertilized-devtools
+
+# OS specific files.
+.DS_store

@@ -1,0 +1,51 @@
+sudo: required
+
+language: cpp
+compiler: gcc
+branches:
+  only:
+    - unstable
+
+os:
+  - linux
+  - osx
+
+env:
+    - BUILD_WITH_SERIALIZATION_WO_PYTHON=true
+      PYTHON_VERSION="none"
+    - BUILD_WITH_SERIALIZATION_WO_PYTHON=false
+      PYTHON_VERSION="2"
+    - BUILD_WITH_SERIALIZATION_WO_PYTHON=false
+      PYTHON_VERSION="3"
+
+matrix:
+  exclude:
+    - os: osx
+      env: BUILD_WITH_SERIALIZATION_WO_PYTHON=true
+           PYTHON_VERSION="none"
+    - os: osx
+      env: BUILD_WITH_SERIALIZATION_WO_PYTHON=false
+           PYTHON_VERSION="3"
+
+before_install:
+  - source build_support/travis/prepare_install.sh
+  - mkdir build
+  - cd build
+
+install:
+  - source ../build_support/travis/install.sh
+  ## Python (must be setup after boost was installed).
+  - source ../build_support/travis/setup_python.sh
+
+before_script:
+  - export OMP_NUM_THREADS=2
+  - export CTEST_OUTPUT_ON_FAILURE=1
+  - export CTEST_PARALLEL_LEVEL=1
+
+script:
+  - source ../build_support/travis/cmake_call.sh
+  - cmake --build . -- -j2
+  - cmake --build . --target test
+
+after_failure:
+  - cat CMakeFiles/CMakeOutput.log

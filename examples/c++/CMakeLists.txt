@@ -15,7 +15,7 @@ foreach (FNAME ${Example_CPP})
   install (TARGETS ${CLEANNAME} DESTINATION examples/c++)
 endforeach (FNAME)
 
-install (DIRECTORY ../matlab DESTINATION examples/)
-install (DIRECTORY ../python DESTINATION examples/)
+#install (DIRECTORY ../matlab DESTINATION examples/)
+#install (DIRECTORY ../python DESTINATION examples/)
 
-enable_testing()
+#enable_testing()

@@ -1,0 +1,28 @@
+branches:
+  only:
+    - unstable
+
+install:
+  ## miniconda.
+  - appveyor DownloadFile http://repo.continuum.io/miniconda/Miniconda-latest-Windows-x86_64.exe
+  - Miniconda-latest-Windows-x86_64.exe /S /D=C:\Anaconda
+  - C:\Anaconda\Scripts\conda update --yes --quiet conda
+  ## Visual Studio.
+  - cd "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC"
+  - vcvarsall.bat amd64
+  - cd C:\projects\fertilized-forests
+  - mkdir build
+  - cd build
+  ## Boost, Eigen3, CMake 3.3.
+  - C:\Anaconda\python.exe ..\build_support\appveyor\setup_environment.py
+  - set PATH=C:\projects\fertilized-forests\build\nuget-deps\boost-compiled\stage\lib;C:\projects\fertilized-forests\build\cmake\cmake-3.3.2-win32-x86\bin;%PATH%
+
+build_script:
+  - cmake -G "Visual Studio 12 2013 Win64" -DCMAKE_BUILD_TYPE=Release -DWITH_SERIALIZATION=ON -DWITH_PYTHON=OFF -DEIGEN3_INCLUDE_DIR=C:\projects\fertilized-forests\build\nuget-deps\Eigen\build\native\include -DBOOST_ROOT=C:\projects\fertilized-forests\build\nuget-deps\boost-compiled ..
+  - cmake --build . --config Release
+
+on_failure:
+  - type C:\projects\fertilized-forests\build\CMakeFiles\CMakeOutput.log
+
+test_script:
+  - cmake --build . --config Release --target run_tests
